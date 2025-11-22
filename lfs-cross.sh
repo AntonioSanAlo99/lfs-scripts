@@ -182,9 +182,9 @@ finish
 
 # 6.4. Bash-5.3
 begin bash-5.3 tar.gz
-./configure --prefix=/usr                   \
+./configure --prefix=/usr                      \
             --build=$(sh support/config.guess) \
-            --host=$LFS_TGT                 \
+            --host=$LFS_TGT                    \
             --without-bash-malloc
 make
 make DESTDIR=$LFS install

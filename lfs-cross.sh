@@ -214,7 +214,7 @@ begin coreutils-9.7 tar.xz
             --enable-no-install-program=kill,uptime \
             gl_cv_macro_MB_CUR_MAX_good=y
             
-make CFLAGS="-O2-DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
 mkdir -pv $LFS/usr/share/man/man8
@@ -227,7 +227,7 @@ begin diffutils-3.12 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             gl_cv_func_strcasecmp_works=y \
-            --build=$(./build-aux/config.guess)
+            --build=$(./build-aux/config.guess) \
 make
 make DESTDIR=$LFS install
 finish

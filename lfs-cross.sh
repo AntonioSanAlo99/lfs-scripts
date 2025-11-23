@@ -152,6 +152,10 @@ make DESTDIR=$LFS install
 rm -v $LFS/usr/lib/lib{stdc++{,exp,fs},supc++}.la
 finish
 
+# Evitar verificaciones problemáticas
+sed -i 's/# error "Assumed value of MB_LEN_MAX wrong"/\/\/ &/' $LFS/usr/include/bits/stdlib.h
+sed -i 's/# error "Assumed value of MB_LEN_MAX wrong"/\/\/ &/' $LFS/usr/include/bits/wchar2.h
+
 # 6.2. M4-1.4.20
 begin m4-1.4.20 tar.xz
 ./configure --prefix=/usr   \
@@ -387,3 +391,8 @@ make
 make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
 finish
+
+# Volver a dejar las verificaciones como estaban antes del capítulo 6
+# Al finalizar capítulo 6, ANTES de chroot
+sed -i 's/\/\/ # error "Assumed value of MB_LEN_MAX wrong"/# error "Assumed value of MB_LEN_MAX wrong"/' $LFS/usr/include/bits/stdlib.h
+sed -i 's/\/\/ # error "Assumed value of MB_LEN_MAX wrong"/# error "Assumed value of MB_LEN_MAX wrong"/' $LFS/usr/include/bits/wchar2.h

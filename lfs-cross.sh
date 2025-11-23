@@ -1,30 +1,39 @@
 #!/bin/bash
-# LFS 12.4 Build Script
-# Builds the cross-toolchain and cross compiling temporary tools from chapters 5 and 6
-# by Luís Mendes :) edited by Antonio Sanchez
-# 22/Nov/2025
 
 package_name=""
 package_ext=""
+LOG_FILE="$LFS/sources/build-errors.log"
 
 begin() {
-	package_name=$1
-	package_ext=$2
-
-	echo "[lfs-cross] Starting build of $package_name at $(date)"
-
-	tar xf $package_name.$package_ext
-	cd $package_name
+    package_name=$1
+    package_ext=$2
+    echo "[lfs-cross] Starting build of $package_name at $(date)"
+    echo "[lfs-cross] Starting build of $package_name at $(date)" >> "$LOG_FILE"
+    tar xf $package_name.$package_ext || {
+        echo "[ERROR] Failed to extract $package_name.$package_ext" | tee -a "$LOG_FILE"
+        exit 1
+    }
+    cd $package_name || {
+        echo "[ERROR] Failed to enter directory $package_name" | tee -a "$LOG_FILE"
+        exit 1
+    }
 }
 
 finish() {
-	echo "[lfs-cross] Finishing build of $package_name at $(date)"
-
-	cd $LFS/sources
-	rm -rf $package_name
+    echo "[lfs-cross] Finishing build of $package_name at $(date)"
+    echo "[lfs-cross] Successfully finished $package_name at $(date)" >> "$LOG_FILE"
+    cd $LFS/sources || exit 1
+    rm -rf $package_name
 }
 
-cd $LFS/sources
+# Manejo de errores global
+trap 'echo "[ERROR] Script failed at line $LINENO with command: $BASH_COMMAND" | tee -a "$LOG_FILE"; exit 1' ERR
+
+set -e
+cd $LFS/sources || exit 1
+
+# Inicia el log
+echo "=== LFS Build Log Started at $(date) ===" > "$LOG_FILE"
 
 # 5.2. Binutils-2.45 - Pass 1
 begin binutils-2.45 tar.xz

@@ -342,7 +342,7 @@ begin gcc-15.2.0 tar.xz
 tar -xf ../mpfr-4.2.2.tar.xz
 mv -v mpfr-4.2.2 mpfr
 tar -xf ../gmp-6.3.0.tar.xz
-mv -v gmp-6..0 gmp
+mv -v gmp-6.3.0 gmp
 tar -xf ../mpc-1.3.1.tar.gz
 mv -v mpc-1.3.1 mpc
 case $(uname -m) in

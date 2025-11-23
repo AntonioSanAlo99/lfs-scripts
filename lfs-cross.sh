@@ -228,7 +228,7 @@ begin diffutils-3.12 tar.xz
             --host=$LFS_TGT \
             gl_cv_func_strcasecmp_works=y \
             --build=$(./build-aux/config.guess) \
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 

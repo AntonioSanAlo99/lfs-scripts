@@ -254,7 +254,7 @@ begin findutils-4.10.0 tar.xz
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make CFLAGS="-O2 -D_POSIX_ARG_MAX=4096 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 

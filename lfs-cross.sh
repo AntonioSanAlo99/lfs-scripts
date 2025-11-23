@@ -254,7 +254,7 @@ begin findutils-4.10.0 tar.xz
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -264,7 +264,7 @@ sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -273,7 +273,7 @@ begin grep-3.12 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
             --build=$(./build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -289,7 +289,7 @@ begin make-4.4.1 tar.gz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -298,7 +298,7 @@ begin patch-2.8 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -307,7 +307,7 @@ begin sed-4.9 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
             --build=$(./build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -316,7 +316,7 @@ begin tar-1.35 tar.xz
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 finish
 
@@ -327,7 +327,7 @@ begin xz-5.8.1 tar.xz
             --build=$(build-aux/config.guess) \
             --disable-static                  \
             --docdir=/usr/share/doc/xz-5.8.1
-make
+make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make DESTDIR=$LFS install
 rm -v $LFS/usr/lib/liblzma.la
 finish

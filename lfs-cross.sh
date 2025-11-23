@@ -163,7 +163,7 @@ make DESTDIR=$LFS install
 finish
 
 # 6.3. Ncurses-6.5-20250809
-begin ncurses-6.5-20250809 tar.gz
+begin ncurses-6.5-20250809 tgz
 mkdir build
 pushd build
   ../configure --prefix=$LFS/tools AWK=gawk

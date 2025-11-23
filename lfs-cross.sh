@@ -269,7 +269,7 @@ make DESTDIR=$LFS install
 finish
 
 # 6.12. Make-4.4.1
-begin make-4.3 tar.gz
+begin make-4.4.1 tar.gz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)

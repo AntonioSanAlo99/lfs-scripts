@@ -208,6 +208,7 @@ begin coreutils-9.7 tar.xz
             --build=$(build-aux/config.guess) \
             --enable-install-program=hostname \
             --enable-no-install-program=kill,uptime
+            CFLAGS="-DPATH_MAX=4096 -DMB_LEN_MAX=16"
 make
 make DESTDIR=$LFS install
 mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin

@@ -37,8 +37,8 @@ echo "=== LFS Build Log Started at $(date) ===" > "$LOG_FILE"
 
 # 5.2. Binutils-2.45 - Pass 1
 begin binutils-2.45 tar.xz
-mkdir -v build
-cd       build
+mkdir build
+cd build
 ../configure --prefix=$LFS/tools \
              --with-sysroot=$LFS \
              --target=$LFS_TGT   \
@@ -54,19 +54,19 @@ finish
 # 5.3. GCC-15.2.0 - Pass 1
 begin gcc-15.2.0 tar.xz
 tar -xf ../mpfr-4.2.2.tar.xz
-mv -v mpfr-4.2.2 mpfr
+mv mpfr-4.2.2 mpfr
 tar -xf ../gmp-6.3.0.tar.xz
-mv -v gmp-6.3.0 gmp
+mv gmp-6.3.0 gmp
 tar -xf ../mpc-1.3.1.tar.gz
-mv -v mpc-1.3.1 mpc
+mv mpc-1.3.1 mpc
 case $(uname -m) in
   x86_64)
     sed -e '/m64=/s/lib64/lib/' \
         -i.orig gcc/config/i386/t-linux64
  ;;
 esac
-mkdir -v build
-cd       build
+mkdir build
+cd build
 ../configure                  \
     --target=$LFS_TGT         \
     --prefix=$LFS/tools       \
@@ -91,7 +91,7 @@ make
 make install
 cd ..
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include/limits.h
 finish
 
 # 5.4. Linux-6.16.1 API Headers
@@ -125,14 +125,6 @@ echo "rootsbindir=/usr/sbin" > configparms
 make
 make DESTDIR=$LFS install
 sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
-echo 'int main(){}' | $LFS_TGT-gcc -x c - -v -Wl,--verbose &> dummy.log
-readelf -l a.out | grep ': /lib'
-grep -E -o "$LFS/lib.*/S?crt[1in].*succeeded" dummy.log
-grep -B3 "^ $LFS/usr/include" dummy.log
-grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
-grep "/lib.*/libc.so.6 " dummy.log
-grep found dummy.log
-rm -v a.out dummy.log
 finish
 
 # 5.6. Libstdc++ from GCC-15.2.0
@@ -152,16 +144,11 @@ make DESTDIR=$LFS install
 rm -v $LFS/usr/lib/lib{stdc++{,exp,fs},supc++}.la
 finish
 
-# Evitar verificaciones problemáticas
-sed -i 's/# error "Assumed value of MB_LEN_MAX wrong"/\/\/ &/' $LFS/usr/include/bits/stdlib.h
-sed -i 's/# error "Assumed value of MB_LEN_MAX wrong"/\/\/ &/' $LFS/usr/include/bits/wchar2.h
-
 # 6.2. M4-1.4.20
 begin m4-1.4.20 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
-            --build=$(build-aux/config.guess) \
-            CFLAGS="-DPATH_MAX=4096 -DMB_LEN_MAX=16"
+            --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
 finish
@@ -211,10 +198,9 @@ begin coreutils-9.7 tar.xz
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
             --enable-install-program=hostname \
-            --enable-no-install-program=kill,uptime \
-            gl_cv_macro_MB_CUR_MAX_good=y
+            --enable-no-install-program=kill,uptime
             
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
 mkdir -pv $LFS/usr/share/man/man8
@@ -228,7 +214,7 @@ begin diffutils-3.12 tar.xz
             --host=$LFS_TGT \
             gl_cv_func_strcasecmp_works=y \
             --build=$(./build-aux/config.guess) \
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -254,7 +240,7 @@ begin findutils-4.10.0 tar.xz
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -D_POSIX_ARG_MAX=4096 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -264,7 +250,7 @@ sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -273,7 +259,7 @@ begin grep-3.12 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
             --build=$(./build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -289,7 +275,7 @@ begin make-4.4.1 tar.gz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -298,7 +284,7 @@ begin patch-2.8 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -307,7 +293,7 @@ begin sed-4.9 tar.xz
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
             --build=$(./build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -316,7 +302,7 @@ begin tar-1.35 tar.xz
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 finish
 
@@ -327,7 +313,7 @@ begin xz-5.8.1 tar.xz
             --build=$(build-aux/config.guess) \
             --disable-static                  \
             --docdir=/usr/share/doc/xz-5.8.1
-make CFLAGS="-O2 -DPATH_MAX=4096 -DMB_LEN_MAX=16"
+make
 make DESTDIR=$LFS install
 rm -v $LFS/usr/lib/liblzma.la
 finish
@@ -363,7 +349,8 @@ tar -xf ../mpc-1.3.1.tar.gz
 mv -v mpc-1.3.1 mpc
 case $(uname -m) in
   x86_64)
-    sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
   ;;
 esac
 sed '/thread_header =/s/@.*@/gthr-posix.h/' \
@@ -392,8 +379,3 @@ make
 make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
 finish
-
-# Volver a dejar las verificaciones como estaban antes del capítulo 6
-# Al finalizar capítulo 6, ANTES de chroot
-sed -i 's/\/\/ # error "Assumed value of MB_LEN_MAX wrong"/# error "Assumed value of MB_LEN_MAX wrong"/' $LFS/usr/include/bits/stdlib.h
-sed -i 's/\/\/ # error "Assumed value of MB_LEN_MAX wrong"/# error "Assumed value of MB_LEN_MAX wrong"/' $LFS/usr/include/bits/wchar2.h

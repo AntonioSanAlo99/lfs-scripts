@@ -257,7 +257,7 @@ finish
 # 6.10. Grep-3.12
 begin grep-3.12 tar.xz
 ./configure --prefix=/usr   \
-            --host=$LFS_TGT
+            --host=$LFS_TGT \
             --build=$(./build-aux/config.guess)
 make
 make DESTDIR=$LFS install
@@ -291,7 +291,7 @@ finish
 # 6.14. Sed-4.9
 begin sed-4.9 tar.xz
 ./configure --prefix=/usr   \
-            --host=$LFS_TGT
+            --host=$LFS_TGT \
             --build=$(./build-aux/config.guess)
 make
 make DESTDIR=$LFS install

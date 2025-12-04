@@ -846,16 +846,16 @@ make install
 finish
 
 # 8.64. GRUB-2.12 						//REVISAR
-#begin grub-2.12 tar.xz
-#echo depends bli part_gpt > grub-core/extra_deps.lst
-#./configure --prefix=/usr          \
-#            --sysconfdir=/etc      \
-#            --disable-efiemu       \
-#            --disable-werror
-#make
-#make install
-#mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
-#finish
+begin grub-2.12 tar.xz
+echo depends bli part_gpt > grub-core/extra_deps.lst
+./configure --prefix=/usr          \
+            --sysconfdir=/etc      \
+            --disable-efiemu       \
+            --disable-werror
+make
+make install
+mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
+finish
 
 # 8.65. Gzip-1.14
 begin gzip-1.14 tar.xz
